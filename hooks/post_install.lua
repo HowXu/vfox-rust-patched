@@ -29,8 +29,8 @@ function PLUGIN:PostInstall(ctx)
         --- print(cmd)
         --- os.execute(cmd)
     else
-        --- local cmd = [[cp -rf "]] .. rustc_std_path .. [[" "]] .. sys_std_path .. [[" > /dev/null 2>&1]]
-        --- print(cmd)
-        --- os.execute(cmd)
+        local cmd = [[cp -rf "]] .. rustc_std_path .. [[" "]] .. sys_std_path .. [[" > /dev/null 2>&1]]
+        print(cmd)
+        os.execute(cmd)
     end
 end
