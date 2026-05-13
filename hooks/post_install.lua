@@ -18,19 +18,30 @@ function PLUGIN:PostInstall(ctx)
     else
         separator = "/"
     end
-    local rustc_std_path = mainPath ..
+
+    local rustc_std_path_unix = mainPath ..
     separator .. "rust-std-" .. platform .. separator .. "lib" .. separator .. "rustlib" .. separator .. platform .. separator
 
-    local sys_std_path = mainPath ..
+    local rustc_std_path_windows = mainPath ..
+    separator .. "rust-std-" .. platform .. separator .. "lib" .. separator .. "rustlib" .. separator .."*"
+
+    local sys_std_path_unix = mainPath ..
     separator .. "rustc" .. separator .. "lib" .. separator .. "rustlib" .. separator
 
+    local sys_std_path_windows = mainPath ..
+    separator .. "rustc" .. separator .. "lib" .. separator .. "rustlib"
+
     if osType == "windows" then
-        --- local cmd = [[xcopy "]] .. rustc_std_path .. [[" "]] .. sys_std_path .. [[" /E /Y /I >nul]]
-        --- print(cmd)
-        --- os.execute(cmd)
-    else
-        local cmd = [[cp -rf "]] .. rustc_std_path .. [[" "]] .. sys_std_path .. [[" > /dev/null 2>&1]]
+        local cmd = [[powershell -c 'Copy-Item -Path "]] .. rustc_std_path_windows .. [[" -Destination "]] .. sys_std_path_windows .. [[" -Recurse -Force']]
+        print("")
+        print("Please run this command by your self to set up libstd:")
+        print("")
         print(cmd)
+        print("")
+        os.execute(cmd)
+    else
+        local cmd = [[cp -rf "]] .. rustc_std_path_unix .. [[" "]] .. sys_std_path_unix .. [[" > /dev/null 2>&1]]
+        --- print(cmd) need log no more
         os.execute(cmd)
     end
 end
