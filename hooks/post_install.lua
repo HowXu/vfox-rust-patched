@@ -18,16 +18,19 @@ function PLUGIN:PostInstall(ctx)
     else
         separator = "/"
     end
-    local sys_std_path = mainPath ..
-    separator .. "rust-std-" .. platform .. separator .. "lib" .. separator .. "rustlib" .. separator .. platform
-
     local rustc_std_path = mainPath ..
-    separator .. "rustc" .. separator .. "lib" .. separator .. "rustlib" .. separator .. platform
+    separator .. "rust-std-" .. platform .. separator .. "lib" .. separator .. "rustlib" .. separator
 
-    --- here we need a way to move files
+    local sys_std_path = mainPath ..
+    separator .. "rustc" .. separator .. "lib" .. separator .. "rustlib" .. separator
+
     if osType == "windows" then
-        
+        local cmd = [[xcopy "]] .. rustc_std_path .. [[" "]] .. sys_std_path .. [[" /E /Y /I >nul]]
+        print(cmd)
+        os.execute(cmd)
     else
-        
+        local cmd = [[cp -rf "]] .. rustc_std_path .. [[" "]] .. sys_std_path .. [[" > /dev/null 2>&1]]
+        print(cmd)
+        os.execute(cmd)
     end
 end
