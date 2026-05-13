@@ -3,7 +3,7 @@ local io = require("io")
 
 local utils = {}
 
-function utils:getPrebuiltVersionUrl(osType, archType, version)
+function utils:getPlatform(osType, archType)
     osType = osType:lower()
     archType = archType:lower()
 
@@ -29,8 +29,17 @@ function utils:getPrebuiltVersionUrl(osType, archType, version)
         archType = "aarch64"
     end
 
-    local url = RUST_URL .. "/rust-" .. version .. "-" .. archType .. "-" .. osType .. ".tar.gz"
+    return archType .. "-" .. osType
+end
 
+function utils:getPrebuiltVersion(osType, archType, version)
+    local platform = utils:getPlatform(osType, archType)
+    local prebuiltVersion = version .. "-" .. platform
+    return  prebuiltVersion
+end
+
+function utils:getPrebuiltVersionUrl(osType, archType, version)
+    local url = RUST_URL .. "/rust-" .. utils:getPrebuiltVersion(osType, archType, version) .. ".tar.gz"
     return url
 end
 
