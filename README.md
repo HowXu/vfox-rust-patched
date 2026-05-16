@@ -1,3 +1,8 @@
+# My View
+
+Rust has constructed a circle of dependence, I recommend rustup instead.
+
+
 # vfox-rust
 
 rust plugin for [vfox](https://vfox.dev/) .
